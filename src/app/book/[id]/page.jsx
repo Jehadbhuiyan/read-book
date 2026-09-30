@@ -5,15 +5,19 @@ import Image from "next/image";
 
 
 const getData = async () => {
-  const response = await fetch("http://localhost:3000/booksData.json");
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_KEY}/booksData.json`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch books data");
   }
 
-  const data = await response.json();
-
-  return data;
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching books data:", error);
+    throw error;
+  }
 };
 const pageDetails = async ({ params }) => {
   const { id } = await params;

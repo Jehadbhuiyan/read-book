@@ -3,7 +3,7 @@ import React from "react";
 import BookCard from "../../conponent/BookCard";
 
 const getData = async () => {
-  const response = await fetch("http://localhost:3000/booksData.json");
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_KEY}/booksData.json`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch books data");
