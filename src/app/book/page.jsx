@@ -1,17 +1,23 @@
-
 import React from "react";
 import BookCard from "../../conponent/BookCard";
+import fs from "fs/promises";
+import path from "path";
 
 const getData = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_KEY}/booksData.json`);
+  try {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "booksData.json"
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch books data");
+    const file = await fs.readFile(filePath, "utf-8");
+
+    return JSON.parse(file);
+  } catch (error) {
+    console.error("Error fetching books data:", error);
+    throw error;
   }
-
-  const data = await response.json();
-
-  return data;
 };
 
 const BookPage = async () => {
@@ -36,7 +42,10 @@ const BookPage = async () => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
           {books.map((book) => (
-            <BookCard key={book.bookId} book={book} />
+            <BookCard
+              key={book.bookId}
+              book={book}
+            />
           ))}
 
         </div>
@@ -46,4 +55,3 @@ const BookPage = async () => {
 };
 
 export default BookPage;
-
